@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-
-namespace Conection
+namespace Connecting
 {
     public class Conn
     {
-        public static void CreateDatabase(SqlConnectionStringBuilder sqlConnection)
+        public static void CreateDatabase(string sqlConnection)
         {
-            using (SqlConnection conn = new SqlConnection(sqlConnection.ConnectionString))
+            using (SqlConnection conn = new SqlConnection(sqlConnection))
             {
                 try
                 {
@@ -18,7 +21,7 @@ namespace Conection
                     {
                         create.ExecuteNonQuery();
                     }
-                    AddTables(conn);
+                    conn.Close();
                 }
                 catch (Exception e)
                 {
@@ -26,25 +29,29 @@ namespace Conection
                 }
                 finally { conn.Dispose(); }
             }
+            using (SqlConnection conn = new SqlConnection(sqlConnection))
+            {
+
+                AddTables(conn);
+            }
         }
 
-        public static void AddTables(SqlConnection conn)
+        private static void AddTables(SqlConnection conn)
         {
             try
             {
                 conn.Open();
-                using (SqlCommand addCategoryTable = new SqlCommand(@"IF NOT EXIST (SELECT name FROM sys.tables WHERE name = N'Category') 
-                                                CREATE TABLE Category 
+                using (SqlCommand addCategoryTable = new SqlCommand(@"IF NOT EXISTS (select * from PersonalMoneyManagment.sys.tables WHERE name = N'Category') 
+                                                CREATE TABLE [PersonalMoneyManagment].[dbo].[Category] 
                                                 (
-                                                    UNIQUEIDENTIFIER NOT NULL,
+                                                    [id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
                                                     [Title] NVARCHAR (MAX)   NOT NULL,
-                                                    CONSTRAINT [PK_Category] PRIMARY KEY 
-                                                )"))
+                                                )", conn))
                 {
                     addCategoryTable.ExecuteNonQuery();
                 }
-                using (SqlCommand addWalletTable = new SqlCommand(@"IF NOT EXIST (SELECT name FROM sys.tables WHERE name = N'Wallet') 
-                                                CREATE TABLE [Wallet] (
+                using (SqlCommand addWalletTable = new SqlCommand(@"IF NOT EXISTS (select * from PersonalMoneyManagment.sys.tables WHERE name = N'Wallet') 
+                                                CREATE TABLE [PersonalMoneyManagment].[dbo].[Wallet] (
                                                     [Id]          UNIQUEIDENTIFIER NOT NULL,
                                                     [CategoryId]  UNIQUEIDENTIFIER NOT NULL,
                                                     [Amount]      MONEY            NOT NULL,
@@ -53,10 +60,11 @@ namespace Conection
                                                     [DateCreated] DATETIME2 (7)    CONSTRAINT [DF_Wallet_DateCreated] DEFAULT (getutcdate()) NOT NULL,
                                                     CONSTRAINT [PK_Wallet] PRIMARY KEY CLUSTERED ([Id] ASC),
                                                     CONSTRAINT [FK_Wallet_Category] FOREIGN KEY ([CategoryId]) REFERENCES [dbo].[Category] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
-                                                );"))
+                                                );", conn))
                 {
                     addWalletTable.ExecuteNonQuery();
                 }
+                conn.Dispose();
             }
             catch (Exception)
             {
@@ -66,8 +74,6 @@ namespace Conection
             {
                 conn.Dispose();
             }
-
-            
         }
     }
 }
