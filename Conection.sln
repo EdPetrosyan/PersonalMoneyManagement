@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PMM", "PMM\PMM.csproj", "{4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connecting", "Connecting\Connecting.csproj", "{07521278-BD0A-4986-ACA7-801783673EA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLCommands", "SQLCommands\SQLCommands.csproj", "{D33F9B04-5B00-43DD-A25E-FBFC1DE53C24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{07521278-BD0A-4986-ACA7-801783673EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07521278-BD0A-4986-ACA7-801783673EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07521278-BD0A-4986-ACA7-801783673EA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D33F9B04-5B00-43DD-A25E-FBFC1DE53C24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D33F9B04-5B00-43DD-A25E-FBFC1DE53C24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D33F9B04-5B00-43DD-A25E-FBFC1DE53C24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D33F9B04-5B00-43DD-A25E-FBFC1DE53C24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
