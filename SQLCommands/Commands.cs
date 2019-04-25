@@ -8,17 +8,18 @@ using System.Data.SqlClient;
 
 namespace SQLCommands
 {
-    class Commands
+    public class Commands
     {
 
         public static void InsertInotDB(string sqlConnection,decimal money, string comment, DateTime day, DateTime dateCreated, string title)
         {
+            InsertProcedure(sqlConnection);
             using (SqlConnection conn = new SqlConnection(sqlConnection))
             {
                 try
                 {
                     conn.Open();
-                    using (SqlCommand insert = new SqlCommand($@"[PersonalMoneyManagment] EXEC pr_Insert {money} {comment} {day} {dateCreated} {title} ", conn))
+                    using (SqlCommand insert = new SqlCommand($@"EXEC pr_Insert {money} {comment} {day} {dateCreated} {title} ", conn))
                     {
                         insert.ExecuteNonQuery();
                     }
@@ -39,7 +40,7 @@ namespace SQLCommands
                 try
                 {
                     conn.Open();
-                    using (SqlCommand insertProcedure = new SqlCommand(@"USE [PersonalMoneyManagment] CREATE PROCEDURE pr_Insert
+                    using (SqlCommand insertProcedure = new SqlCommand(@"CREATE PROCEDURE pr_Insert
                                                                         @money  money = 0,
                                                                         @comment nvarchar(500),
                                                                         @day Datetime2,
@@ -56,9 +57,7 @@ namespace SQLCommands
 	                                                                        VALUES(@id,@title)
 
 	                                                                        SET NOCOUNT ON;
-                                                                        END
-                                                                        GO
-                                                                        ", conn))
+                                                                        END", conn))
                     {
 
                         insertProcedure.ExecuteNonQuery();

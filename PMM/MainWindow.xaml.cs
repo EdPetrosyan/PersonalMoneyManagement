@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Connecting;
 using System.Configuration;
+using SQLCommands;
+
 
 namespace PMM
 {
@@ -26,6 +28,7 @@ namespace PMM
         {
             string connString = ConfigurationManager.ConnectionStrings["Conn"].ConnectionString;
             Conn.CreateDatabase(connString);
+            Commands.InsertInotDB(connString, 1000, "First", DateTime.Now, DateTime.Now, "Bulki");
         }
 
         public MainWindow()
