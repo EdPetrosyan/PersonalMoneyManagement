@@ -11,6 +11,27 @@ namespace SQLCommands
     class Commands
     {
 
+        public static void InsertInotDB(string sqlConnection,decimal money, string comment, DateTime day, DateTime dateCreated, string title)
+        {
+            using (SqlConnection conn = new SqlConnection(sqlConnection))
+            {
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand insert = new SqlCommand($@"[PersonalMoneyManagment] EXEC pr_Insert {money} {comment} {day} {dateCreated} {title} ", conn))
+                    {
+                        insert.ExecuteNonQuery();
+                    }
+                    conn.Dispose();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally { conn.Dispose(); }
+            }
+        }
+
         public static void InsertProcedure(string sqlconnection)
         {
             using (SqlConnection conn = new SqlConnection(sqlconnection))
@@ -18,7 +39,7 @@ namespace SQLCommands
                 try
                 {
                     conn.Open();
-                    using (SqlCommand insertProcedure = new SqlCommand(@"CREATE PROCEDURE pr_Insert
+                    using (SqlCommand insertProcedure = new SqlCommand(@"USE [PersonalMoneyManagment] CREATE PROCEDURE pr_Insert
                                                                         @money  money = 0,
                                                                         @comment nvarchar(500),
                                                                         @day Datetime2,
